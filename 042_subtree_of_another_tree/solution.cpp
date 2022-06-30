@@ -11,6 +11,35 @@
  */
 class Solution {
 public:
+    
+    // Approach 2: Collect all nodes with a value matching the root and then compare them all
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        vector<TreeNode*> starts;
+        traverse(root, subRoot, starts);
+        
+        bool matched(false);
+        for (auto start : starts) {
+            if (matched = compareTrees(start, subRoot))
+                break;
+        }
+        
+        return matched;
+    }
+    
+    void traverse(TreeNode* root, TreeNode* subRoot, vector<TreeNode*>& starts) {
+        if (root == nullptr) {
+            return;
+        }
+        
+        if (root->val == subRoot->val) {
+            starts.push_back(root);
+        }
+        
+        traverse(root->left, subRoot, starts);
+        traverse(root->right, subRoot, starts);
+    }
+    
+#if 0
     // Approach 1: Traverse tree and upon discovering a matching root then compare
     bool isSubtree(TreeNode* root, TreeNode* subRoot) {
         bool matched(false);
@@ -32,6 +61,8 @@ private:
         traverse(root->left, subRoot, fullyMatched);
         traverse(root->right, subRoot, fullyMatched);
     }
+
+#endif
     
     bool compareTrees(TreeNode* root, TreeNode* subRoot) {
         if ((root != nullptr) != (subRoot != nullptr)) {
@@ -48,4 +79,5 @@ private:
         auto rightTree = compareTrees(root->right, subRoot->right);
         return (leftTree && rightTree);
     }
+
 };
